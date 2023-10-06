@@ -53,7 +53,7 @@ def persistence(goal = 11, until = 64):
           reduced = str(reduce(mul, map(int, reduced), 1))
           steps += 1
         if steps == goal:
-          return f"p({goal}) = {front}{''.join(back)}"
+          return f"p({goal}) = {front}{"".join(back)}"
   return f"Sorry, nothing under {until + 1} digits"
 
 # Above method but doing the reduce mul map int manually, so a fair bit faster
@@ -71,7 +71,7 @@ def faststr(goal = 11, until = 64):
           reduced = str(acc) # 48 == ord("0")
           steps += 1
         if steps == goal:
-          return f"p({goal}) = {front}{''.join(back)}"
+          return f"p({goal}) = {front}{"".join(back)}"
   return f"Sorry, nothing under {until + 1} digits"
 
 def faststr2(goal = 11, until = 64):
@@ -88,7 +88,7 @@ def faststr2(goal = 11, until = 64):
           reduced = int_to_str(acc) # 48 == ord("0")
           steps += 1
         if steps == goal:
-          return f"p({goal}) = {front}{''.join(back)}"
+          return f"p({goal}) = {front}{"".join(back)}"
   return f"Sorry, nothing under {until + 1} digits"
 
 # The same method but using integers rather than strings, gets real slow with big numbers
@@ -97,7 +97,7 @@ def fastint(goal = 11, until = 64):
     for front in ["26", "2", "3", "6", ""]:
       backfill = ndigits - len(front)
       for back in combinations_with_replacement("789", backfill):
-        reduced = int(f"{front}{''.join(back)}")
+        reduced = int(f"{front}{"".join(back)}")
         steps = 0
         while reduced > 9:
           acc = 1
@@ -108,7 +108,7 @@ def fastint(goal = 11, until = 64):
           reduced = acc
           steps += 1
         if steps == goal:
-          return f"p({goal}) = {front}{''.join(back)}"
+          return f"p({goal}) = {front}{"".join(back)}"
   return f"Sorry, nothing under {until + 1} digits"
 
 """
@@ -146,7 +146,7 @@ def main():
       for front in ["26", "2", "3", "6", ""]:
         backfill = ndigits - len(front)
         for back in combinations_with_replacement("789", backfill): # fill the rest
-          reduced = int(f"{front}{''.join(back)}")
+          reduced = int(f"{front}{"".join(back)}")
           steps = 0
           while reduced > 9:
             acc = 1
