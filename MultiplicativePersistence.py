@@ -1,15 +1,20 @@
-from itertools import combinations_with_replacement
+"""
+Minimum Multiplicative Persistences.
+
+https://oeis.org/A003001
+
+Copyright 2020 Alex Blandin
+"""
+
 from functools import reduce
+from itertools import combinations_with_replacement
 from operator import mul
 from time import time
-
-# Minimum Multiplicative Persistences
-# https://oeis.org/A003001
 
 # Helper Functions
 
 
-def tf(func, *args, **kwargs):  # time func
+def tf(func, *args, **kwargs):  # time func  # noqa: ANN001, ANN002, ANN003, ANN201, D103
   start = time()
   r = func(*args, **kwargs)
   end = time()
@@ -18,7 +23,7 @@ def tf(func, *args, **kwargs):  # time func
 
 
 # Convert single digit to 2
-def digit2(x: int):
+def digit2(x: int):  # noqa: ANN201, D103
   value = x << 1
   return (
     "0001020304050607080910111213141516171819"
@@ -29,27 +34,27 @@ def digit2(x: int):
   )
 
 
-# Convert an int to a str 2 digits at a time, currently really slow bc str copies etc, do in a bytearray and use "pointer math" kinda
-def int_to_str(x: int):
+# Convert an int to a str 2 digits at a time, currently really slow bc str copies etc, do in a bytearray and use "pointer math" kinda  # noqa: E501
+def int_to_str(x: int):  # noqa: ANN201, D103
   buf = []
-  while x >= 100:
+  while x >= 100:  # noqa: PLR2004
     x, m = divmod(x, 100)
     buf.append(digit2(m))
-  if x < 10:
+  if x < 10:  # noqa: PLR2004
     buf.append(chr(ord("0") + x))
   else:
     buf.append(digit2(x))
   return "".join(reversed(buf))
 
 
-def human_time(t: float, seconds=True):  # dumb but "decently" formatted
+def human_time(t: float, *, seconds: bool = True) -> str:  # dumb but "decently" formatted  # noqa: D103
   return (
-    f"{int(t // 60)}m {human_time((int(t) % 60) + (t - int(t)), True)}"
-    if t > 60
+    f"{int(t // 60)}m {human_time((int(t) % 60) + (t - int(t)), seconds=True)}"
+    if t > 60  # noqa: PLR2004
     else f"{t:.3f}s"
-    if t > 0.1 and seconds
+    if t > 0.1 and seconds  # noqa: PLR2004
     else f"{t * 1000:.3f}ms"
-    if t > 0.0001
+    if t > 0.0001  # noqa: PLR2004
     else f"{t * 1000000:.3f}us"
   )
 
@@ -57,7 +62,7 @@ def human_time(t: float, seconds=True):  # dumb but "decently" formatted
 # Method demonstrated below, as a function
 # goal = how many steps
 # until = maximum length of the number in base 10
-def persistence(goal=11, until=64):
+def persistence(goal=11, until=64) -> str:  # noqa: ANN001, D103
   for ndigits in range(2, until + 1):  # number of digits
     for front in ["26", "2", "3", "6", ""]:
       backfill = ndigits - len(front)
@@ -73,7 +78,7 @@ def persistence(goal=11, until=64):
 
 
 # Above method but doing the reduce mul map int manually, so a fair bit faster
-def faststr(goal=11, until=64):
+def faststr(goal=11, until=64) -> str:  # noqa: ANN001, D103
   for ndigits in range(2, until + 1):  # number of digits
     for front in ["26", "2", "3", "6", ""]:
       backfill = ndigits - len(front)
@@ -91,7 +96,7 @@ def faststr(goal=11, until=64):
   return f"Sorry, nothing under {until + 1} digits"
 
 
-def faststr2(goal=11, until=64):
+def faststr2(goal=11, until=64) -> str:  # noqa: ANN001, D103
   for ndigits in range(2, until + 1):  # number of digits
     for front in ["26", "2", "3", "6", ""]:
       backfill = ndigits - len(front)
@@ -110,14 +115,14 @@ def faststr2(goal=11, until=64):
 
 
 # The same method but using integers rather than strings, gets real slow with big numbers
-def fastint(goal=11, until=64):
+def fastint(goal=11, until=64) -> str:  # noqa: ANN001, D103
   for ndigits in range(2, until + 1):
     for front in ["26", "2", "3", "6", ""]:
       backfill = ndigits - len(front)
       for back in combinations_with_replacement("789", backfill):
         reduced = int(f"{front}{"".join(back)}")
         steps = 0
-        while reduced > 9:
+        while reduced > 9:  # noqa: PLR2004
           acc = 1
           while reduced > 0:  # the slow part for big N, could try more "fixed function" divmod 10 using bitshifts
             reduced, mod = divmod(reduced, 10)
@@ -148,7 +153,7 @@ pypy 3.7.4 (7.3.2-alpha0)
 """
 
 
-def main():
+def main() -> None:  # noqa: D103
   print()
   print("Generating multiplicative persistences")
   print("See https://youtu.be/Wim9WJeDTHQ")
@@ -168,7 +173,7 @@ def main():
         for back in combinations_with_replacement("789", backfill):  # fill the rest
           reduced = int(f"{front}{"".join(back)}")
           steps = 0
-          while reduced > 9:
+          while reduced > 9:  # noqa: PLR2004
             acc = 1
             while reduced > 0:
               reduced, mod = divmod(reduced, 10)
