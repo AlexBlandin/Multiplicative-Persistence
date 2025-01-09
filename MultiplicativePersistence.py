@@ -18,7 +18,7 @@ def tf(func, *args, **kwargs):  # time func  # noqa: ANN001, ANN002, ANN003, ANN
   start = time()
   r = func(*args, **kwargs)
   end = time()
-  print(func.__name__, human_time(end - start))
+  print(func.__name__, human_time(end - start))  # noqa: T201
   return r
 
 
@@ -73,7 +73,7 @@ def persistence(goal=11, until=64) -> str:  # noqa: ANN001, D103
           reduced = str(reduce(mul, map(int, reduced), 1))
           steps += 1
         if steps == goal:
-          return f"p({goal}) = {front}{"".join(back)}"
+          return f"p({goal}) = {front}{''.join(back)}"
   return f"Sorry, nothing under {until + 1} digits"
 
 
@@ -92,7 +92,7 @@ def faststr(goal=11, until=64) -> str:  # noqa: ANN001, D103
           reduced = str(acc)  # 48 == ord("0")
           steps += 1
         if steps == goal:
-          return f"p({goal}) = {front}{"".join(back)}"
+          return f"p({goal}) = {front}{''.join(back)}"
   return f"Sorry, nothing under {until + 1} digits"
 
 
@@ -110,7 +110,7 @@ def faststr2(goal=11, until=64) -> str:  # noqa: ANN001, D103
           reduced = int_to_str(acc)  # 48 == ord("0")
           steps += 1
         if steps == goal:
-          return f"p({goal}) = {front}{"".join(back)}"
+          return f"p({goal}) = {front}{''.join(back)}"
   return f"Sorry, nothing under {until + 1} digits"
 
 
@@ -120,7 +120,7 @@ def fastint(goal=11, until=64) -> str:  # noqa: ANN001, D103
     for front in ["26", "2", "3", "6", ""]:
       backfill = ndigits - len(front)
       for back in combinations_with_replacement("789", backfill):
-        reduced = int(f"{front}{"".join(back)}")
+        reduced = int(f"{front}{''.join(back)}")
         steps = 0
         while reduced > 9:  # noqa: PLR2004
           acc = 1
@@ -131,7 +131,7 @@ def fastint(goal=11, until=64) -> str:  # noqa: ANN001, D103
           reduced = acc
           steps += 1
         if steps == goal:
-          return f"p({goal}) = {front}{"".join(back)}"
+          return f"p({goal}) = {front}{''.join(back)}"
   return f"Sorry, nothing under {until + 1} digits"
 
 
@@ -154,24 +154,24 @@ pypy 3.7.4 (7.3.2-alpha0)
 
 
 def main() -> None:  # noqa: D103
-  print()
-  print("Generating multiplicative persistences")
-  print("See https://youtu.be/Wim9WJeDTHQ")
-  print("More info @ https://oeis.org/A003001")
-  print("Source @ https://repl.it/@alexblandin/Multiplicative-Persistence")
-  print()
+  print()  # noqa: T201
+  print("Generating multiplicative persistences")  # noqa: T201
+  print("See https://youtu.be/Wim9WJeDTHQ")  # noqa: T201
+  print("More info @ https://oeis.org/A003001")  # noqa: T201
+  print("Source @ https://repl.it/@alexblandin/Multiplicative-Persistence")  # noqa: T201
+  print()  # noqa: T201
 
   low = 3  # lowest persistance
   high = 12  # 12 and higher are unknown but suspected to NOT have solutions
   until = 200  # pypy exhausts in 43s, cpython in 2m 26s for goal=12
   for goal in range(low, high + 1):
-    print(f"Finding the smallest number with persistence {goal}...")
+    print(f"Finding the smallest number with persistence {goal}...")  # noqa: T201
     start = time()
     for ndigits in range(2, until + 1):  # number of digits
       for front in ["26", "2", "3", "6", ""]:
         backfill = ndigits - len(front)
         for back in combinations_with_replacement("789", backfill):  # fill the rest
-          reduced = int(f"{front}{"".join(back)}")
+          reduced = int(f"{front}{''.join(back)}")
           steps = 0
           while reduced > 9:  # noqa: PLR2004
             acc = 1
@@ -183,11 +183,11 @@ def main() -> None:  # noqa: D103
           if steps == goal:
             end = time()  # found it
             reduced = front + "".join(back)
-            print(f"{reduced} has persistence {goal}, via:")
+            print(f"{reduced} has persistence {goal}, via:")  # noqa: T201
             while len(reduced) > 1:
               reduced = str(reduce(mul, [int(digit) for digit in reduced], 1))
-              print(reduced, end="\n" if len(reduced) > 1 else "")
-            print(f", {steps} steps found in {human_time(end - start)}\n")
+              print(reduced, end="\n" if len(reduced) > 1 else "")  # noqa: T201
+            print(f", {steps} steps found in {human_time(end - start)}\n")  # noqa: T201
             break
         else:
           continue
@@ -197,7 +197,7 @@ def main() -> None:  # noqa: D103
       break
     else:
       end = time()
-      print(f"Nothing with (up to) {until} digits for {goal} steps, used {human_time(end - start)}\n")
+      print(f"Nothing with (up to) {until} digits for {goal} steps, used {human_time(end - start)}\n")  # noqa: T201
 
 
 if __name__ == "__main__":
